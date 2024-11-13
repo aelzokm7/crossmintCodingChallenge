@@ -35,6 +35,7 @@ def phase1(size_of_cross):
                 response = requests.post(polyanets_endpoint, headers={"content-type": "application/json"}, data = json.dumps({"row": str(x), "column": str(y), "candidateId": os.getenv("CANDIDATE_ID")}));
                 if response.status_code == 429:
                     time.sleep(5);
+                    response = requests.post(polyanets_endpoint, headers={"content-type": "application/json"}, data = json.dumps({"row": str(x), "column": str(y), "candidateId": os.getenv("CANDIDATE_ID")}));
 
 # Don't forget the main block
 
