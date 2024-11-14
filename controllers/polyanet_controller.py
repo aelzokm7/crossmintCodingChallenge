@@ -4,7 +4,8 @@ import time;
 import os;
 from dotenv import load_dotenv
 
-from utils.map_utils import get_map_grid
+from utils.map_utils import get_current_map_grid
+
 
 load_dotenv()
 
@@ -30,7 +31,7 @@ def add_polyanet_to_map(x, y):
         print("Failed to add polyanet. Error: ", e);
     print("Polyanet added successfully!")
 
-def delete_polyanet_from_map(x, y):
+def delete_polyanets_from_map(x, y):
     try:
         response = requests.post(polyanets_endpoint, headers={"content-type": "application/json"}, data = json.dumps({"row": str(x), "column": str(y), "candidateId": os.getenv("CANDIDATE_ID")}));
         response.raise_for_status();
@@ -38,13 +39,12 @@ def delete_polyanet_from_map(x, y):
         print("Failed to delete polyanet. Error: ", e);
     print("Polyanet Deleted Successfully!")
 
-
-def delete_all_polyanet_from_map():
-    grid = get_map_grid();
+def delete_all_polyanets_from_map():
+    grid = get_current_map_grid();
     if (grid is None or len(grid) == 0):
         print("Nothing to delete");
         return;
     for x in range(0, len(grid)):
         for y in range(0, len(grid[0])):
-            delete_polyanet_from_map(x,y);
+            delete_polyanets_from_map(x,y);
     print("Successfully Deleted All Polyanets.")

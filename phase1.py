@@ -1,10 +1,10 @@
 from controllers.polyanet_controller import add_polyanet_to_map
-from utils.map_utils import get_map_grid
+from utils.map_utils import get_current_map_grid, get_goal_map_grid
 
 # Phase 1 #
 def phase1(length_of_cross_arm):
 
-    grid = get_map_grid();
+    grid = get_goal_map_grid();
 
     if (grid is None or len(grid) == 0):
         print("Map grid does not exist");
@@ -26,7 +26,7 @@ def phase1(length_of_cross_arm):
             if (abs(x - center_width_of_grid) == abs(y - center_height_of_grid)):
                 add_polyanet_to_map(x, y);
     
-    print(get_map_grid());
+    print(get_current_map_grid());
 
 # Main Block
 
