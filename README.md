@@ -7,3 +7,4 @@ Add type checking to the classes.
 Make a base request service that can be configured.
 After completing phase 2, see if anything can be refactored in phase 1.
 Add type hints everywhere.
+Testing????

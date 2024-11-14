@@ -1,3 +1,5 @@
+from classes.Cometh import Cometh
+from controllers.cometh_controller import add_cometh_to_map, delete_cometh_from_map
 from utils.map_utils import get_current_map_grid, get_goal_map_grid
 
 # Get the Goal Map
@@ -9,7 +11,8 @@ from utils.map_utils import get_current_map_grid, get_goal_map_grid
 # Compare the two maps at the end to see if they are equal
 
 def phase2():
-
+    cometh = Cometh("1", "1", "down")
+    delete_cometh_from_map(cometh);
 
     return None;
 
