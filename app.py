@@ -9,11 +9,12 @@ load_dotenv()
 # API Endpoints
 goal_endpoint = "https://challenge.crossmint.io/api/map/" + os.getenv("CANDIDATE_ID")
 polyanets_endpoint = "https://challenge.crossmint.io/api/polyanets/"
+MAX_RETRY = 3;
 
 # Phase 1 #
-def phase1(size_of_cross):
+def phase1(length_of_cross_arm):
 
-# Get the map grid.
+# Get the map grid. Add in error handling for this.
     response = requests.get(goal_endpoint);
     grid = response.json()["map"]["content"];
 
@@ -28,24 +29,37 @@ def phase1(size_of_cross):
 # Search through the subgrid that will contain the cross.
 # Check at each coordinate if it is diagonal to the center point using the below formula.
 # If it is on a diagonal, call the api and populate that coordinate.
-
-    for x in range(center_width_of_grid - size_of_cross, center_width_of_grid + size_of_cross + 1):
-        for y in range(center_height_of_grid - size_of_cross, center_height_of_grid + size_of_cross + 1):
+    for x in range(center_width_of_grid - length_of_cross_arm, center_width_of_grid + length_of_cross_arm + 1):
+        for y in range(center_height_of_grid - length_of_cross_arm, center_height_of_grid + length_of_cross_arm + 1):
             if (abs(x - center_width_of_grid) == abs(y - center_height_of_grid)):
-                response = requests.post(polyanets_endpoint, headers={"content-type": "application/json"}, data = json.dumps({"row": str(x), "column": str(y), "candidateId": os.getenv("CANDIDATE_ID")}));
-                if response.status_code == 429:
-                    time.sleep(5);
+                try:
                     response = requests.post(polyanets_endpoint, headers={"content-type": "application/json"}, data = json.dumps({"row": str(x), "column": str(y), "candidateId": os.getenv("CANDIDATE_ID")}));
+                    # Timeout error
+                    if response.status_code == 429:
+                        retry = 0;
+                        while (response.status_code == 429 and retry < MAX_RETRY):
+                            time.sleep(5);
+                            # retry the request that triggered the rate limit in case it did not go through.
+                            response = requests.post(polyanets_endpoint, headers={"content-type": "application/json"}, data = json.dumps({"row": str(x), "column": str(y), "candidateId": os.getenv("CANDIDATE_ID")}));
+                            retry += 1;
+                    else: 
+                        response.raise_for_status();
+                except requests.exceptions.RequestException as e:
+                    print("Failed to add polyanet. Error: ", e);
+
+    # Print final map grid of code run.
+
+
 
 # Don't forget the main block
 
 if __name__ == "__main__":
 
     # Input Parameters
-    size_of_cross = 3;
+    length_of_cross_arm_from_center = 3;
 
     # function
-    phase1(size_of_cross);
+    phase1(length_of_cross_arm_from_center);
 
 
 
