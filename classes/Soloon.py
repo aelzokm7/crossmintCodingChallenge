@@ -1,9 +1,11 @@
-class Soloon:
+from classes.SpaceObject import SpaceObject
 
+class Soloon(SpaceObject):
+    
     colors = ["red", "blue", "purple", "white"];
 
     def __init__(self, row, column, color):
-        self.row = row;
-        self.column = column;
-        self.color = color;
+        super().__init__(row, column)
+        self.direction = color;
+        
 

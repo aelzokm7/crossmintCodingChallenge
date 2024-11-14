@@ -28,23 +28,32 @@ def add_polyanet_to_map(x, y):
         else: 
             response.raise_for_status();
     except requests.exceptions.RequestException as e:
-        print("Failed to add polyanet. Error: ", e);
-    print("Polyanet added successfully!")
+        print("Failed To Add Polyanet. Error: ", e);
+    print("Polyanet Added Successfully!")
 
-def delete_polyanets_from_map(x, y):
+def delete_polyanet_from_map(x, y):
     try:
-        response = requests.post(polyanets_endpoint, headers={"content-type": "application/json"}, data = json.dumps({"row": str(x), "column": str(y), "candidateId": os.getenv("CANDIDATE_ID")}));
-        response.raise_for_status();
+        response = requests.delete(polyanets_endpoint, headers={"content-type": "application/json"}, data = json.dumps({"row": str(x), "column": str(y), "candidateId": os.getenv("CANDIDATE_ID")}));
+        if response.status_code == 429:
+            retry = 0;
+            while (response.status_code == 429 and retry < MAX_RETRY):
+                time.sleep(5);
+                # retry the request that triggered the rate limit in case it did not go through.
+                response = requests.delete(polyanets_endpoint, headers={"content-type": "application/json"}, data = json.dumps({"row": str(x), "column": str(y), "candidateId": os.getenv("CANDIDATE_ID")}));
+                retry += 1;
+        else: 
+            response.raise_for_status();
     except requests.exceptions.RequestException as e:
-        print("Failed to delete polyanet. Error: ", e);
+        print("Failed To Delete Polyanet. Error: ", e);
     print("Polyanet Deleted Successfully!")
 
 def delete_all_polyanets_from_map():
     grid = get_current_map_grid();
     if (grid is None or len(grid) == 0):
-        print("Nothing to delete");
+        print("Nothing To Delete.");
         return;
     for x in range(0, len(grid)):
         for y in range(0, len(grid[0])):
-            delete_polyanets_from_map(x,y);
+            if grid[x][y] is not None:
+                delete_polyanet_from_map(x,y);
     print("Successfully Deleted All Polyanets.")

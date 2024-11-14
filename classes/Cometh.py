@@ -1,9 +1,9 @@
-class Cometh:
+from classes.SpaceObject import SpaceObject
+
+class Cometh(SpaceObject):
 
     directions = ["up", "down", "left", "right"];
 
     def __init__(self, row, column, direction):
-        self.row = row;
-        self.column = column;
+        super().__init__(row, column)
         self.direction = direction;
-
