@@ -1,5 +1,5 @@
 class SpaceObject:
 
-    def __init__(self, row, column):
+    def __init__(self, row: int, column: int):
         self.row = row;
         self.column = column;

@@ -1,15 +1,13 @@
 import classes;
-import classes.Soloon
 import controllers.cometh_controller as cometh
 import controllers.polyanet_controller as polyanet
 import controllers.soloon_controller as soloon
-from utils.map_utils import get_current_map_grid;
-from utils.request import make_request;
+from utils.map_utils import get_map_grid;
 
 
 # function to add a space object to map
-def add_space_object_to_map(space_object: classes.SpaceObject):
-    match isinstance(space_object):
+def add_space_object_to_map(space_object: classes.SpaceObject) -> None:
+    match not isinstance(space_object):
         case classes.Polyanet:
             polyanet.add_polyanet_to_map(space_object);
         case classes.Cometh:
@@ -20,7 +18,7 @@ def add_space_object_to_map(space_object: classes.SpaceObject):
             print("Invalid Space Object");
 
 # function to delete a space object from map
-def delete_space_object_from_map(space_object: classes.SpaceObject):
+def delete_space_object_from_map(space_object: classes.SpaceObject) -> None:
     match isinstance(space_object):
         case classes.Polyanet:
             polyanet.delete_polyanet_from_map(space_object);
@@ -31,7 +29,7 @@ def delete_space_object_from_map(space_object: classes.SpaceObject):
         case _:
             print("Invalid Space Object");
 
-def delete_all_of_one_space_object_from_map(space_object: classes.SpaceObject):
+def delete_all_of_one_space_object_from_map(space_object: classes.SpaceObject) -> None:
         match isinstance(space_object):
             case classes.Polyanet:
                 polyanet.delete_all_polyanets_from_map();
@@ -43,8 +41,8 @@ def delete_all_of_one_space_object_from_map(space_object: classes.SpaceObject):
                 print("Invalid Space Object");
 
 # function to reset map
-def reset_map():
-    grid = get_current_map_grid();
+def reset_map() -> None:
+    grid = get_map_grid("current");
     if (grid is None or len(grid) == 0):
         print("Nothing To Delete.");
         return;

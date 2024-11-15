@@ -11,9 +11,6 @@ from utils.map_utils import get_current_map_grid, get_goal_map_grid
 # Compare the two maps at the end to see if they are equal
 
 def phase2():
-    cometh = Cometh("1", "1", "down")
-    delete_cometh_from_map(cometh);
-
     return None;
 
 

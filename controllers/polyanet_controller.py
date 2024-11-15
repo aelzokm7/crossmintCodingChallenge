@@ -6,24 +6,22 @@ import os;
 from dotenv import load_dotenv
 from classes import RequestObject
 from classes.Polyanet import Polyanet
+from constants import HTTP_DELETE, HTTP_POST, POLYANETS_ENDPOINT
 from utils.map_utils import get_current_map_grid
 from utils.request import make_request
 
 load_dotenv()
 
-# Variables
-polyanets_endpoint = "https://challenge.crossmint.io/api/polyanets/"
-
 # function to add polyanet to map
-def add_polyanet_to_map(polyanet: Polyanet):
-    request_object = RequestObject(polyanets_endpoint, "post", json.dumps({**polyanet.__dict__, "candidateId": os.getenv("CANDIDATE_ID")}));
-    asyncio.run(make_request(request_object));
+def add_polyanet_to_map(polyanet: Polyanet) -> None:
+    request_object = RequestObject(POLYANETS_ENDPOINT, {**polyanet.__dict__, "candidateId": os.getenv("CANDIDATE_ID")});
+    asyncio.run(make_request(request_object), HTTP_POST);
 
-def delete_polyanet_from_map(polyanet: Polyanet):
-    request_object = RequestObject(polyanets_endpoint, "delete", json.dumps({**polyanet.__dict__, "candidateId": os.getenv("CANDIDATE_ID")}));
-    asyncio.run(make_request(request_object));
+def delete_polyanet_from_map(polyanet: Polyanet) -> None:
+    request_object = RequestObject(POLYANETS_ENDPOINT, {**polyanet.__dict__, "candidateId": os.getenv("CANDIDATE_ID")});
+    asyncio.run(make_request(request_object), HTTP_DELETE);
 
-def delete_all_polyanets_from_map():
+def delete_all_polyanets_from_map() -> None:
     grid = get_current_map_grid();
     if (grid is None or len(grid) == 0):
         print("Nothing To Delete.");
