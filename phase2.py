@@ -3,14 +3,14 @@ from classes.Cometh import Cometh
 from classes.Polyanet import Polyanet
 from classes.Soloon import Soloon
 from classes.SpaceObject import SpaceObject
-from constants import COMETH, CURRENT, GOAL, POLYANET, SOLOON
+from constants.constants import COMETH, POLYANET, SOLOON
 from controllers.space_objects_controller import add_space_object_to_map, delete_all_of_one_space_object_from_map, delete_space_object_from_map, reset_map
-from utils.map_utils import get_map_grid
+from utils.map_utils import get_current_map_grid, get_goal_map_grid
 
 def phase2() -> None:
 
     # Get the Goal Map
-    goal_grid = get_map_grid(GOAL);
+    goal_grid = get_goal_map_grid();
     print(goal_grid);
     space_objects_set: set[SpaceObject] = set();
 
@@ -30,7 +30,7 @@ def phase2() -> None:
     for space_object in space_objects_set:
         add_space_object_to_map(space_object); 
     
-    final_map = get_map_grid(CURRENT);
+    final_map = get_current_map_grid();
     
     print(final_map);
     

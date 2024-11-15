@@ -1,5 +1,5 @@
 from classes.SpaceObject import SpaceObject
-from constants import COMETH_DIRECTIONS
+from constants.constants import COMETH_DIRECTIONS
 
 
 class Cometh(SpaceObject):
@@ -10,7 +10,7 @@ class Cometh(SpaceObject):
         direction = direction.lower()
 
         if not (direction in COMETH_DIRECTIONS):
-            raise ValueError("Direction has to be one of the following: " + str(COMETH_DIRECTIONS));
+            raise ValueError("Direction Has To Be One Of The Following: " + str(COMETH_DIRECTIONS));
         
         self.direction = direction;
 

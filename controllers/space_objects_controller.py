@@ -3,7 +3,7 @@ from classes.Cometh import Cometh
 from classes.Soloon import Soloon
 from classes.SpaceObject import SpaceObject
 from classes.Polyanet import Polyanet
-from constants import COMETH, POLYANET, SOLOON
+from constants.constants import COMETH, POLYANET, SOLOON
 import controllers.cometh_controller as cometh
 import controllers.polyanet_controller as polyanet
 import controllers.soloon_controller as soloon
@@ -18,7 +18,7 @@ def add_space_object_to_map(space_object: SpaceObject) -> None:
     elif isinstance(space_object, Soloon):
         soloon.add_soloon_to_map(space_object);
     else:
-        print("Invalid Space Object");
+        print("Invalid Space Object!: ", space_object);
 
 # function to delete a space object from map
 def delete_space_object_from_map(space_object: SpaceObject) -> None:
@@ -29,7 +29,7 @@ def delete_space_object_from_map(space_object: SpaceObject) -> None:
     elif isinstance(space_object, Soloon):
         soloon.delete_soloon_from_map(space_object.row, space_object.column);
     else:
-        print("Invalid Space Object");
+        print("Invalid Space Object!: ", space_object);
 
 def delete_all_of_one_space_object_from_map(space_object_type: int) -> None:
     if (space_object_type == POLYANET["type"]):
@@ -39,6 +39,6 @@ def delete_all_of_one_space_object_from_map(space_object_type: int) -> None:
     elif (space_object_type == SOLOON["type"]):
         soloon.delete_all_soloons_from_map();
     else:
-        print("Invalid Space Object");
+        print("Invalid Space Object Type!: ", space_object_type);
 
 

@@ -1,5 +1,5 @@
 from classes.SpaceObject import SpaceObject
-from constants import SOLOONS_COLORS
+from constants.constants import SOLOON_COLORS
 
 class Soloon(SpaceObject):
 
@@ -8,8 +8,8 @@ class Soloon(SpaceObject):
 
         color = color.lower();
 
-        if not (color in SOLOONS_COLORS):
-            raise ValueError("Color has to be one of the following: " + str(SOLOONS_COLORS));
+        if not (color in SOLOON_COLORS):
+            raise ValueError("Color Has To Be One Of The Following: " + str(SOLOON_COLORS));
         
         self.color = color;
         

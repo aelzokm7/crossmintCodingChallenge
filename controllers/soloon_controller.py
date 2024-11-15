@@ -1,9 +1,10 @@
 import asyncio
 import os
+from typing import List
 from classes.Soloon import Soloon
 from classes.RequestObject import RequestObject
-from constants import HTTP_DELETE, HTTP_POST, SOLOON, SOLOONS_ENDPOINT
-from utils.map_utils import get_map_grid
+from constants.constants import HTTP_DELETE, HTTP_POST, SOLOON, SOLOONS_ENDPOINT
+from utils.map_utils import get_current_map_grid
 from utils.request import make_request
 from dotenv import load_dotenv
 
@@ -12,23 +13,33 @@ load_dotenv()
 # function to add soloon to map
 
 def add_soloon_to_map(soloon: Soloon) -> None:
+    print("Adding Soloon To Map.")
     request_object: RequestObject = RequestObject(SOLOONS_ENDPOINT, {**soloon.__dict__, "candidateId": os.getenv("CANDIDATE_ID")});
-    asyncio.run(make_request(request_object, HTTP_POST));
+    response: dict = asyncio.run(make_request(request_object, HTTP_POST));
+    if (response.get("failed")):
+        print(f"Unable To Add Soloon At ({soloon.row}, {soloon.column}) To Map.");
+        return;
+    print(f"Successfully Added Soloon To Map At ({soloon.row}, {soloon.column})!");
 
 # function to delete soloon from map
 def delete_soloon_from_map(row: int, column: int) -> None:
+    print("Deleting Soloon From Map.")
     request_object: RequestObject = RequestObject(SOLOONS_ENDPOINT, {"row": row, "column": column, "candidateId": os.getenv("CANDIDATE_ID")});
-    asyncio.run(make_request(request_object, HTTP_DELETE));
+    response: dict = asyncio.run(make_request(request_object, HTTP_DELETE));
+    if (response.get("failed")):
+        print(f"Unable To Delete Soloon At ({row}, {column}) From Map.");
+        return;
+    print(f"Successfully Deleted Soloon At ({row}, {column}) From Map!");
 
 # function to delete all soloon from map
 def delete_all_soloons_from_map() -> None:
-    grid = get_map_grid("current");
+    grid: List[List[dict]] = get_current_map_grid();
     if (grid is None or len(grid) == 0):
         print("Nothing To Delete.");
         return;
     for x in range(0, len(grid)):
         for y in range(0, len(grid[0])):
-            if grid[x][y] is not None and grid[x][y]["type"] == SOLOON["type"]:
+            if grid[x][y] is not None and grid[x][y].get("type") == SOLOON["type"]:
                 delete_soloon_from_map(x, y);
-    print("Successfully Deleted.")
+    print("Successfully Deleted All Soloons!")
 

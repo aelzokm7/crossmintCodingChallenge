@@ -3,7 +3,7 @@ import os
 from typing import List;
 from dotenv import load_dotenv
 from classes.RequestObject import RequestObject
-from constants import CURRENT, CURRENT_MAP_ENDPOINT, GOAL, GOAL_MAP_ENDPOINT, HTTP_GET
+from constants.constants import CURRENT_MAP_ENDPOINT, GOAL_MAP_ENDPOINT, HTTP_GET
 from utils.request import make_request
 import controllers.cometh_controller as cometh
 import controllers.polyanet_controller as polyanet
@@ -11,20 +11,27 @@ import controllers.soloon_controller as soloon
 
 load_dotenv()
 
-# Get the map grid.
-def get_map_grid(map: str) -> List[List[str]]:
-    grid = None;
+# Get the goal map grid.
+def get_goal_map_grid() -> List[List[str]]:
+    grid: List[List[str]] = None;
     try:
-        if (map.lower() == GOAL):
+            print("Retrieving Goal Map.");
             request_object: RequestObject = RequestObject(GOAL_MAP_ENDPOINT.format(os.getenv("CANDIDATE_ID")));
             response: dict = asyncio.run(make_request(request_object, HTTP_GET));
-            grid = response["goal"];
-        elif (map.lower() == CURRENT):
+            grid: List[List[str]] = response.get("goal");
+    except:
+        print("Failed to retrieve map.");
+    else:
+        return grid;
+
+# Get the current map grid.
+def get_current_map_grid() -> List[List[dict]]:
+    grid: List[List[dict]] = None;
+    try:
+            print("Retrieving Current Map.");
             request_object: RequestObject = RequestObject(CURRENT_MAP_ENDPOINT + os.getenv("CANDIDATE_ID"));
             response: dict = asyncio.run(make_request(request_object, HTTP_GET));
-            grid = response["map"]["content"];
-        else:
-            print("Invalid Map Request. Either 'goal' or 'current'.")
+            grid: List[List[dict]] = response.get("map").get("content");
     except:
         print("Failed to retrieve map.");
     else:
@@ -32,12 +39,12 @@ def get_map_grid(map: str) -> List[List[str]]:
 
 # function to reset map
 def reset_map() -> None:
-    grid = get_map_grid("current");
+    grid: List[List[dict]] = get_current_map_grid();
     if (grid is None or len(grid) == 0):
         print("Nothing To Delete.");
         return;
     polyanet.delete_all_polyanets_from_map();
     cometh.delete_all_comeths_from_map();
     soloon.delete_all_soloons_from_map();
-    print("Successfully Deleted All Objects.")
+    print("Map Has Been Cleared!");
 

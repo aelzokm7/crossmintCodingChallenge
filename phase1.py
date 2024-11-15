@@ -1,10 +1,11 @@
+from typing import List
 from controllers.polyanet_controller import add_polyanet_to_map
-from utils.map_utils import get_map_grid
+from utils.map_utils import get_current_map_grid, get_goal_map_grid  
 
 # Phase 1 #
 def phase1(subgrid_offset: int):
 
-    grid = get_map_grid("goal");
+    grid: List[List[str]] = get_goal_map_grid();
 
     if (grid is None or len(grid) == 0):
         print("Map Grid Does Not Exist.");
@@ -27,7 +28,7 @@ def phase1(subgrid_offset: int):
                 add_polyanet_to_map(x, y);
     
     
-    print(get_map_grid("current"));
+    print(get_current_map_grid());
 
 # Main Block
 
