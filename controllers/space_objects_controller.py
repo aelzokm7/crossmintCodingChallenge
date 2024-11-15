@@ -1,3 +1,4 @@
+from typing import List
 from classes.Cometh import Cometh
 from classes.Soloon import Soloon
 from classes.SpaceObject import SpaceObject
@@ -6,7 +7,6 @@ from constants import COMETH, POLYANET, SOLOON
 import controllers.cometh_controller as cometh
 import controllers.polyanet_controller as polyanet
 import controllers.soloon_controller as soloon
-from utils.map_utils import get_map_grid;
 
 
 # function to add a space object to map
@@ -40,19 +40,5 @@ def delete_all_of_one_space_object_from_map(space_object_type: int) -> None:
         soloon.delete_all_soloons_from_map();
     else:
         print("Invalid Space Object");
-
-# function to reset map
-def reset_map() -> None:
-    grid = get_map_grid("current");
-    if (grid is None or len(grid) == 0):
-        print("Nothing To Delete.");
-        return;
-    for x in range(0, len(grid)):
-        for y in range(0, len(grid[0])):
-            if grid[x][y] is not None:
-                polyanet.delete_all_polyanets_from_map();
-                cometh.delete_all_comeths_from_map();
-                soloon.delete_all_soloons_from_map();
-    print("Successfully Deleted All Objects.")
 
 

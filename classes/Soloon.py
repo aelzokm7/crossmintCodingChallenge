@@ -3,7 +3,7 @@ from constants import SOLOONS_COLORS
 
 class Soloon(SpaceObject):
 
-    def __init__(self, row: int, column: int, color: str):
+    def __init__(self, row: int | str, column: int | str, color: str):
         super().__init__(row, column)
 
         color = color.lower();

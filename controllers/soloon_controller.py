@@ -12,12 +12,12 @@ load_dotenv()
 # function to add soloon to map
 
 def add_soloon_to_map(soloon: Soloon) -> None:
-    request_object = RequestObject(SOLOONS_ENDPOINT, {**soloon.__dict__, "candidateId": os.getenv("CANDIDATE_ID")});
+    request_object: RequestObject = RequestObject(SOLOONS_ENDPOINT, {**soloon.__dict__, "candidateId": os.getenv("CANDIDATE_ID")});
     asyncio.run(make_request(request_object, HTTP_POST));
 
 # function to delete soloon from map
 def delete_soloon_from_map(row: int, column: int) -> None:
-    request_object = RequestObject(SOLOONS_ENDPOINT, {"row": row, "column": column, "candidateId": os.getenv("CANDIDATE_ID")});
+    request_object: RequestObject = RequestObject(SOLOONS_ENDPOINT, {"row": row, "column": column, "candidateId": os.getenv("CANDIDATE_ID")});
     asyncio.run(make_request(request_object, HTTP_DELETE));
 
 # function to delete all soloon from map

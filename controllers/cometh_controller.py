@@ -12,12 +12,12 @@ load_dotenv()
 # function to add cometh to map
 
 def add_cometh_to_map(cometh: Cometh) -> None:
-    request_object = RequestObject(COMETHS_ENDPOINT, {**cometh.__dict__, "candidateId": os.getenv("CANDIDATE_ID")});
+    request_object: RequestObject = RequestObject(COMETHS_ENDPOINT, {**cometh.__dict__, "candidateId": os.getenv("CANDIDATE_ID")});
     asyncio.run(make_request(request_object, HTTP_POST));
 
 # function to delete cometh from map
 def delete_cometh_from_map(row: int, column: int) -> None:
-    request_object = RequestObject(COMETHS_ENDPOINT, {"row": row, "column": column, "candidateId": os.getenv("CANDIDATE_ID")});
+    request_object: RequestObject = RequestObject(COMETHS_ENDPOINT, {"row": row, "column": column, "candidateId": os.getenv("CANDIDATE_ID")});
     asyncio.run(make_request(request_object, HTTP_DELETE));
 
 # function to delete all comeths from map

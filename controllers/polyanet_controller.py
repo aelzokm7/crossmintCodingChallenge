@@ -11,11 +11,11 @@ load_dotenv()
 
 # function to add polyanet to map
 def add_polyanet_to_map(polyanet: Polyanet) -> None:
-    request_object = RequestObject(POLYANETS_ENDPOINT, {**polyanet.__dict__, "candidateId": os.getenv("CANDIDATE_ID")});
+    request_object: RequestObject = RequestObject(POLYANETS_ENDPOINT, {**polyanet.__dict__, "candidateId": os.getenv("CANDIDATE_ID")});
     asyncio.run(make_request(request_object, HTTP_POST));
 
 def delete_polyanet_from_map(row: int, column: int) -> None:
-    request_object = RequestObject(POLYANETS_ENDPOINT, {"row": row, "column": column, "candidateId": os.getenv("CANDIDATE_ID")});
+    request_object: RequestObject = RequestObject(POLYANETS_ENDPOINT, {"row": row, "column": column, "candidateId": os.getenv("CANDIDATE_ID")});
     asyncio.run(make_request(request_object, HTTP_DELETE));
 
 def delete_all_polyanets_from_map() -> None:
