@@ -5,7 +5,7 @@ from classes import RequestObject
 from constants import MAX_RETRY, RATE_LIMIT_TIME_DELAY;
 
 async def make_request(request_object: RequestObject, method) -> dict:
-    async with aiohttp.ClientSession(raise_for_status=True) as session:
+    async with aiohttp.ClientSession() as session:
         try:
             response = await session.request(method=method, url=request_object.url, data=request_object.body, headers=request_object.headers);
             if response.status == 429:
@@ -15,7 +15,9 @@ async def make_request(request_object: RequestObject, method) -> dict:
                     # retry the request that triggered the rate limit in case it did not go through.
                     response = await session.request(method=method, url=request_object.url, data=request_object.body, headers=request_object.headers);
                     retry += 1;
-            response = await response.json();
+            elif not (200 <= response.status < 300):
+                raise RuntimeError('Status is not 2xx');
+            response = await response.json();   
         except requests.exceptions.RequestException as e:
             print(f"Failed To WORD BASED ON CALL HERE {type(request_object).__name__}. Error: ", e);
         else:

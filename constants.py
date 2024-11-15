@@ -1,6 +1,9 @@
 # Global Variables
 MAX_RETRY = 3;
 RATE_LIMIT_TIME_DELAY = 5;
+CURRENT = "current";
+GOAL = "goal"
+SPACE_OBJECTS = {"POLYANET": "polyanet", "COMETH": "cometh", "SOLOON": "soloon"}
 
 # Endpoints
 GOAL_MAP_ENDPOINT = "https://challenge.crossmint.io/api/map/{}/goal";
@@ -9,9 +12,13 @@ POLYANETS_ENDPOINT = "https://challenge.crossmint.io/api/polyanets/";
 COMETHS_ENDPOINT = "https://challenge.crossmint.io/api/comeths/";
 SOLOONS_ENDPOINT = "https://challenge.crossmint.io/api/soloons/";
 
-# Constraints
+# Space Objects Values and Constraints
 COMETH_DIRECTIONS = {"up", "down", "left", "right"};
 SOLOONS_COLORS = {"red", "blue", "purple", "white"};
+POLYANET = {"name": "polyanet", "type": 0}
+COMETH = {"name": "cometh", "type": 2}
+SOLOON = {"name": "soloon", "type": 1}
+
 
 # HTTP_METHODS
 HTTP_POST = "POST";

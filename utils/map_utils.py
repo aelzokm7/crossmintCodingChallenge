@@ -14,11 +14,11 @@ def get_map_grid(map: str) -> List[List[str]]:
     try:
         if (map.lower() == "goal"):
             request_object = RequestObject(GOAL_MAP_ENDPOINT.format(os.getenv("CANDIDATE_ID")));
-            response = asyncio.run(make_request(request_object), HTTP_GET);
+            response = asyncio.run(make_request(request_object, HTTP_GET));
             grid = grid = response["goal"];
         elif (map.lower() == "current"):
             request_object = RequestObject(CURRENT_MAP_ENDPOINT + os.getenv("CANDIDATE_ID"));
-            response = asyncio.run(make_request(request_object), HTTP_GET);
+            response = asyncio.run(make_request(request_object, HTTP_GET));
             grid = response["map"]["content"];
         else:
             print("Invalid Map Request. Either 'goal' or 'current'.")
