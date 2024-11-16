@@ -10,10 +10,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# function to add soloon to map
-
 def add_soloon_to_map(soloon: Soloon) -> None:
-    print("Adding Soloon To Map.")
+    """ Function to add a soloon to the map. """
+
+    print("Adding Soloon To Map.");
     request_object: RequestObject = RequestObject(SOLOONS_ENDPOINT, {**soloon.__dict__, "candidateId": os.getenv("CANDIDATE_ID")});
     response: dict = asyncio.run(make_request(request_object, HTTP_POST));
     if (response.get("failed")):
@@ -21,9 +21,10 @@ def add_soloon_to_map(soloon: Soloon) -> None:
         return;
     print(f"Successfully Added Soloon To Map At ({soloon.row}, {soloon.column})!");
 
-# function to delete soloon from map
 def delete_soloon_from_map(row: int, column: int) -> None:
-    print("Deleting Soloon From Map.")
+    """ Function to delete a soloon from the map. """
+
+    print("Deleting Soloon From Map.");
     request_object: RequestObject = RequestObject(SOLOONS_ENDPOINT, {"row": row, "column": column, "candidateId": os.getenv("CANDIDATE_ID")});
     response: dict = asyncio.run(make_request(request_object, HTTP_DELETE));
     if (response.get("failed")):
@@ -31,15 +32,15 @@ def delete_soloon_from_map(row: int, column: int) -> None:
         return;
     print(f"Successfully Deleted Soloon At ({row}, {column}) From Map!");
 
-# function to delete all soloon from map
 def delete_all_soloons_from_map() -> None:
+    """ Function to delete all soloons from the map. """
+
     grid: List[List[dict]] = get_current_map_grid();
     if (grid is None or len(grid) == 0):
         print("Nothing To Delete.");
         return;
     for x in range(0, len(grid)):
         for y in range(0, len(grid[0])):
-            if grid[x][y] is not None and grid[x][y].get("type") == SOLOON["type"]:
+            if (grid[x][y] is not None and grid[x][y].get("type") == SOLOON["type"]):
                 delete_soloon_from_map(x, y);
-    print("Successfully Deleted All Soloons!")
 

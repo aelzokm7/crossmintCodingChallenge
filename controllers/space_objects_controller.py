@@ -7,10 +7,11 @@ from constants.constants import COMETH, POLYANET, SOLOON
 import controllers.cometh_controller as cometh
 import controllers.polyanet_controller as polyanet
 import controllers.soloon_controller as soloon
+from utils.map_utils import get_current_map_grid
 
-
-# function to add a space object to map
 def add_space_object_to_map(space_object: SpaceObject) -> None:
+    """ Function to route a space object to proper add to map method. """
+
     if isinstance(space_object, Polyanet):
         polyanet.add_polyanet_to_map(space_object);
     elif isinstance(space_object, Cometh):
@@ -20,8 +21,9 @@ def add_space_object_to_map(space_object: SpaceObject) -> None:
     else:
         print("Invalid Space Object!: ", space_object);
 
-# function to delete a space object from map
 def delete_space_object_from_map(space_object: SpaceObject) -> None:
+    """ Function to route a space object to proper delete from map method. """
+
     if isinstance(space_object, Polyanet):
         polyanet.delete_polyanet_from_map(space_object.row, space_object.column);
     elif isinstance(space_object, Cometh):
@@ -32,6 +34,8 @@ def delete_space_object_from_map(space_object: SpaceObject) -> None:
         print("Invalid Space Object!: ", space_object);
 
 def delete_all_of_one_space_object_from_map(space_object_type: int) -> None:
+    """ Function to route a space object to proper delete all from map method. """
+
     if (space_object_type == POLYANET["type"]):
         polyanet.delete_all_polyanets_from_map();
     elif (space_object_type == COMETH["type"]):
@@ -40,5 +44,26 @@ def delete_all_of_one_space_object_from_map(space_object_type: int) -> None:
         soloon.delete_all_soloons_from_map();
     else:
         print("Invalid Space Object Type!: ", space_object_type);
+
+def reset_map() -> None:
+    """ Function to delete all space objects from map. """
+
+    grid: List[List[dict]] = get_current_map_grid();
+    if (grid is None or len(grid) == 0):
+        print("Nothing To Delete.");
+        return;
+    polyanet.delete_all_polyanets_from_map();
+    cometh.delete_all_comeths_from_map();
+    soloon.delete_all_soloons_from_map();
+    remaining_objects: int = 0;
+    grid = get_current_map_grid();
+    for x in range(0, len(grid)):
+        for y in range(0, len(grid[0])):
+            if (grid[x][y] is not None):
+                remaining_objects += 1;
+    if (remaining_objects > 0):
+        print(f"Failed To Delete {remaining_objects} Space Objects!");
+    else:
+        print("Map Has Been Cleared!");
 
 

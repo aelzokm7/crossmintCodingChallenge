@@ -1,6 +1,6 @@
 # General Variables
 MAX_RETRY = 3;
-RATE_LIMIT_TIME_DELAY = 5;
+RATE_LIMIT_TIME_DELAY = 10;
 
 # Endpoints
 GOAL_MAP_ENDPOINT = "https://challenge.crossmint.io/api/map/{}/goal";
@@ -10,7 +10,7 @@ COMETHS_ENDPOINT = "https://challenge.crossmint.io/api/comeths/";
 SOLOONS_ENDPOINT = "https://challenge.crossmint.io/api/soloons/";
 
 # Space Objects Values and Constraints
-SPACE_OBJECTS = {"POLYANET": "polyanet", "COMETH": "cometh", "SOLOON": "soloon"}
+SPACE_OBJECTS = {"POLYANET": "polyanet", "COMETH": "cometh", "SOLOON": "soloon"};
 COMETH_DIRECTIONS = {"up", "down", "left", "right"};
 SOLOON_COLORS = {"red", "blue", "purple", "white"};
 POLYANET = {"name": "polyanet", "type": 0}
