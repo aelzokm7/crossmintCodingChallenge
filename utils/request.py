@@ -28,10 +28,10 @@ async def make_request(request_object: RequestObject, method: str) -> dict:
                     e.status = response.status
             elif not (e.status < 400):
                 print("HTTP Request Failed. Please Try Again! Error: ", e);
-                final_response.set("failed", True);
+                final_response = {"failed": True};
         except aiohttp.ClientError as e:   
             print("An error occured!: ", e);
-            final_response.set("failed", True);
+            final_response = {"failed": True};
         else:
             print("HTTP Request Was Successful!");
         finally:

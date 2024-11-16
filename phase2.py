@@ -12,6 +12,8 @@ def phase2() -> None:
 
     # Get the Goal Map.
     goal_grid = get_goal_map_grid();
+    if (goal_grid is None):
+        return;
 
     # Create a set to hold the space objects to be added to the current map grid.
     space_objects_set: set[SpaceObject] = set();
