@@ -17,7 +17,7 @@ def add_space_object_to_map(space_object: SpaceObject) -> None:
         print("Invalid Space Object!: ", space_object);
         return;
     name: str = space_object.__class__.__name__.lower();
-    print(f"Adding {name} To Map.");
+    print(f"Adding a {name} To Map.");
     request_object: RequestObject = RequestObject(API_ENDPOINT.format(name), {**space_object.__dict__, "candidateId": os.getenv("CANDIDATE_ID")});
     response: dict = asyncio.run(make_request(request_object, HTTP_POST));
     if (response.get("failed")):
@@ -70,10 +70,8 @@ def reset_map() -> None:
     if (grid is None or len(grid) == 0):
         print("No Grid Exists.");
         return;
-
     for key in SPACE_OBJECTS.keys():
         delete_all_of_one_space_object_type_from_map(SPACE_OBJECTS[key].get("name"));
-    
     remaining_objects: int = 0;
     grid = get_current_map_grid();
     for x in range(0, len(grid)):

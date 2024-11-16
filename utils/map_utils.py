@@ -10,7 +10,7 @@ load_dotenv()
 
 def get_goal_map_grid() -> List[List[str]]:
     """ Function to retrieve goal map. 
-        :return: A 2D matrix of strings.
+        :returns: A 2D matrix of strings.
     """
 
     grid: List[List[str]] = None;
@@ -25,7 +25,7 @@ def get_goal_map_grid() -> List[List[str]]:
 
 def get_current_map_grid() -> List[List[dict]]:
     """ Function to retrieve current map. 
-        :return: A 2D matrix of objects.
+        :returns: A 2D matrix of objects.
     """
 
     grid: List[List[dict]] = None;

@@ -3,8 +3,6 @@ from constants.constants import SOLOONS_COLORS
 
 class Soloons(SpaceObject):
 
-    name = "soloons";
-
     def __new__(cls, row: int | str, column: int | str, color: int | str):
         color = color.lower();
         try: 
