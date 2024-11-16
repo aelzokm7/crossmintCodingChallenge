@@ -16,7 +16,7 @@ This repository contains code written for the Crossmint Coding Challenge. The ru
 2. Create virtual environment.
     <br/>```python -m venv venv```
     <br />```source venv/bin/activate``` <br/>
-3. Install dependencies using ```pip install -r requirements.txt.```
+3. Install dependencies using ```pip install -r requirements.txt```
 4. Create env file in root directory based on .env.example.
 5. Run ```python phase1.py``` or ```python phase2.py``` depending on which challenge you are examining.
 
