@@ -1,60 +1,79 @@
+import asyncio
+import os
 from typing import List
-from classes.Cometh import Cometh
-from classes.Soloon import Soloon
+from dotenv import load_dotenv
+from classes.RequestObject import RequestObject
 from classes.SpaceObject import SpaceObject
-from classes.Polyanet import Polyanet
-from constants.constants import COMETH, POLYANET, SOLOON, SPACE_OBJECTS
-import controllers.cometh_controller as cometh
-import controllers.polyanet_controller as polyanet
-import controllers.soloon_controller as soloon
+from constants.constants import API_ENDPOINT, HTTP_DELETE, HTTP_POST, SPACE_OBJECTS
 from utils.map_utils import get_current_map_grid
+from utils.request import make_request
+
+load_dotenv();
 
 def add_space_object_to_map(space_object: SpaceObject) -> None:
-    """ Function to route a space object to proper add to map method. """
+    """ Function to add a space object to the map. """
 
-    if isinstance(space_object, Polyanet):
-        polyanet.add_polyanet_to_map(space_object);
-    elif isinstance(space_object, Cometh):
-        cometh.add_cometh_to_map(space_object);
-    elif isinstance(space_object, Soloon):
-        soloon.add_soloon_to_map(space_object);
-    else:
+    if not (issubclass(type(space_object), SpaceObject)):
         print("Invalid Space Object!: ", space_object);
+        return;
+    name: str = space_object.__class__.__name__.lower();
+    print(f"Adding {name} To Map.");
+    request_object: RequestObject = RequestObject(API_ENDPOINT.format(name), {**space_object.__dict__, "candidateId": os.getenv("CANDIDATE_ID")});
+    response: dict = asyncio.run(make_request(request_object, HTTP_POST));
+    if (response.get("failed")):
+        print(f"Unable To Add {name} At ({space_object.row}, {space_object.column}) To Map.");
+        return;
+    print(f"Successfully Added {name} To Map At ({space_object.row}, {space_object.column})!");
 
 def delete_space_object_from_map(space_object: SpaceObject) -> None:
-    """ Function to route a space object to proper delete from map method. """
+    """ Function to parse a space object before delete from map method. """
 
-    if isinstance(space_object, Polyanet):
-        polyanet.delete_polyanet_from_map(space_object.row, space_object.column);
-    elif isinstance(space_object, Cometh):
-        cometh.delete_cometh_from_map(space_object.row, space_object.column);
-    elif isinstance(space_object, Soloon):
-        soloon.delete_soloon_from_map(space_object.row, space_object.column);
-    else:
+    if not (issubclass(type(space_object), SpaceObject)):
         print("Invalid Space Object!: ", space_object);
+        return;
+    name: str = space_object.__class__.__name__.lower();
+    delete_from_map(name, space_object.row, space_object.column);
 
-def delete_all_of_one_space_object_from_map(space_object: str) -> None:
-    """ Function to route a space object to proper delete all from map method. """
+def delete_all_of_one_space_object_type_from_map(name: str) -> None:
+    """ Function to delete all space objects of a single type from the map. """
 
-    if (space_object == SPACE_OBJECTS["POLYANET"]):
-        polyanet.delete_all_polyanets_from_map();
-    elif (space_object == SPACE_OBJECTS["COMETH"]):
-        cometh.delete_all_comeths_from_map();
-    elif (space_object == SPACE_OBJECTS["SOLOON"]):
-        soloon.delete_all_soloons_from_map();
-    else:
-        print("Invalid Space Object Type!: ", space_object);
+    name = name.lower();
+    if not (SPACE_OBJECTS.get(name)):
+        print("Invalid Space Object Name!");
+        return;
+    object_type: int = SPACE_OBJECTS.get(name).get("type");
+    grid: List[List[dict]] = get_current_map_grid();
+    if (grid is None or len(grid) == 0):
+        print("No Grid Exists.");
+        return;
+    print(f"Starting Deletion Of All {name} From Map.");
+    for x in range(0, len(grid)):
+        for y in range(0, len(grid[0])):
+            if (grid[x][y] is not None and grid[x][y].get("type") == object_type):
+                delete_from_map(name, x,y);
+
+def delete_from_map(name: str, row: int, column: int) -> None:
+    """ Function to delete a space object from the map. """
+
+    print(f"Deleting a {name} From Map.");
+    request_object: RequestObject = RequestObject(API_ENDPOINT.format(name), {"row": row, "column": column, "candidateId": os.getenv("CANDIDATE_ID")});
+    response: dict = asyncio.run(make_request(request_object, HTTP_DELETE));
+    if (response.get("failed")):
+        print(f"Unable To Delete {name} At ({row}, {column}) From Map.");
+        return;
+    print(f"Successfully Deleted {name} At ({row}, {column}) From Map!");
 
 def reset_map() -> None:
     """ Function to delete all space objects from map. """
 
     grid: List[List[dict]] = get_current_map_grid();
     if (grid is None or len(grid) == 0):
-        print("Nothing To Delete.");
+        print("No Grid Exists.");
         return;
-    polyanet.delete_all_polyanets_from_map();
-    cometh.delete_all_comeths_from_map();
-    soloon.delete_all_soloons_from_map();
+
+    for key in SPACE_OBJECTS.keys():
+        delete_all_of_one_space_object_type_from_map(SPACE_OBJECTS[key].get("name"));
+    
     remaining_objects: int = 0;
     grid = get_current_map_grid();
     for x in range(0, len(grid)):
@@ -65,5 +84,3 @@ def reset_map() -> None:
         print(f"Failed To Delete {remaining_objects} Space Objects!");
     else:
         print("Map Has Been Cleared!");
-
-

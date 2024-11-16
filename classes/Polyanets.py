@@ -1,5 +1,6 @@
 from classes.SpaceObject import SpaceObject
 
-class Polyanet(SpaceObject):
+class Polyanets(SpaceObject):
+    name = "polyanets";
     pass;
     

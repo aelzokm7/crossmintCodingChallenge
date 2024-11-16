@@ -1,7 +1,7 @@
-from classes.Polyanet import Polyanet
-from controllers.polyanet_controller import add_polyanet_to_map
+from classes.Polyanets import Polyanets
+from controllers.space_objects_controller import add_space_object_to_map
 
-def phase1(subgrid_offset: int, grid_size: int):
+def phase1(subgrid_offset: int, grid_size: int) -> None:
     """ Function to create a symmetrical X on an Odd-Sized Square Grid. 
         :param subgrid_offset: Determines the height and width of X.
         :param grid_size: The grid size to create the X on.
@@ -30,8 +30,8 @@ def phase1(subgrid_offset: int, grid_size: int):
     for x in range(subgrid_offset, grid_size - subgrid_offset):
         for y in range(subgrid_offset, grid_size - subgrid_offset):
             if (abs(x - center) == abs(y - center)):
-                polyanet: Polyanet = Polyanet(x, y)
-                add_polyanet_to_map(polyanet);
+                polyanets: Polyanets = Polyanets(x, y)
+                add_space_object_to_map(polyanets);
     
 # Main Block
 if __name__ == "__main__":
