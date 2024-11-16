@@ -4,7 +4,7 @@ from classes.Polyanet import Polyanet
 from classes.Soloon import Soloon
 from classes.SpaceObject import SpaceObject
 from constants.constants import COMETH, POLYANET, SOLOON
-from controllers.space_objects_controller import add_space_object_to_map, delete_all_of_one_space_object_from_map, delete_space_object_from_map
+from controllers.space_objects_controller import add_space_object_to_map
 from utils.map_utils import get_goal_map_grid
 
 # Phase 2 Script
@@ -38,9 +38,4 @@ def phase2() -> None:
 
 # Main Block
 if __name__ == "__main__":
-
-    cometh = Cometh(1, 1, "UP");
-    print("COmeeth", type(cometh))
-    print(cometh.__dict__)
-
-    # phase2();
+    phase2();

@@ -3,7 +3,7 @@ from classes.Cometh import Cometh
 from classes.Soloon import Soloon
 from classes.SpaceObject import SpaceObject
 from classes.Polyanet import Polyanet
-from constants.constants import COMETH, POLYANET, SOLOON
+from constants.constants import COMETH, POLYANET, SOLOON, SPACE_OBJECTS
 import controllers.cometh_controller as cometh
 import controllers.polyanet_controller as polyanet
 import controllers.soloon_controller as soloon
@@ -33,17 +33,17 @@ def delete_space_object_from_map(space_object: SpaceObject) -> None:
     else:
         print("Invalid Space Object!: ", space_object);
 
-def delete_all_of_one_space_object_from_map(space_object_type: int) -> None:
+def delete_all_of_one_space_object_from_map(space_object: str) -> None:
     """ Function to route a space object to proper delete all from map method. """
 
-    if (space_object_type == POLYANET["type"]):
+    if (space_object == SPACE_OBJECTS["POLYANET"]):
         polyanet.delete_all_polyanets_from_map();
-    elif (space_object_type == COMETH["type"]):
+    elif (space_object == SPACE_OBJECTS["COMETH"]):
         cometh.delete_all_comeths_from_map();
-    elif (space_object_type == SOLOON["type"]):
+    elif (space_object == SPACE_OBJECTS["SOLOON"]):
         soloon.delete_all_soloons_from_map();
     else:
-        print("Invalid Space Object Type!: ", space_object_type);
+        print("Invalid Space Object Type!: ", space_object);
 
 def reset_map() -> None:
     """ Function to delete all space objects from map. """
